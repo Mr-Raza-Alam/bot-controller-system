@@ -1,0 +1,6 @@
+# .gitignore — files NOT to push to GitHub or Vercel
+
+node_modules/
+.env
+*.log
+.DS_Store
