@@ -80,18 +80,50 @@ const Navigation = () => {
     window._navVoice = recognition;
   }, []);
 
+  // optimistic local audit log recorder for instant 0ms UI feedback
+  const recordOptimisticAudit = (action, mode = "MANUAL", source = "MANUAL") => {
+    const entry = {
+      action,
+      mode,
+      source,
+      time: new Date().toLocaleTimeString(),
+      createdAt: new Date(),
+    };
+    setNavState((prev) => {
+      const prevHistory = prev.history || [];
+      const isDup =
+        prevHistory.length > 0 &&
+        prevHistory[0].action === action &&
+        prevHistory[0].mode === mode &&
+        prevHistory[0].source === source;
+      return {
+        ...prev,
+        action,
+        mode,
+        source,
+        history: isDup ? prevHistory : [entry, ...prevHistory.slice(0, 9)],
+      };
+    });
+  };
+
   // trigger voice action with visual echo on d-pad
   const triggerVoiceAction = async (action) => {
     setVoiceEchoKey(action);
     setTimeout(() => setVoiceEchoKey(null), 1200);
 
-    await postNavCommand({
+    recordOptimisticAudit(action, navState.mode, "VOICE");
+
+    const res = await postNavCommand({
       mode: navState.mode,
       action,
       source: "VOICE",
     });
 
-    fetchStatus();
+    if (res.success && res.data?.history) {
+      setNavState((prev) => ({ ...prev, history: res.data.history }));
+    } else {
+      fetchStatus();
+    }
   };
 
   const toggleVoice = () => {
@@ -108,36 +140,52 @@ const Navigation = () => {
 
   // mode switch (MANUAL vs AUTONOMOUS)
   const handleModeSwitch = async (newMode) => {
-    await postNavCommand({
+    const newAction = newMode === "AUTONOMOUS" ? "FORWARD" : "STOP";
+    recordOptimisticAudit(newAction, newMode, "MANUAL");
+
+    const res = await postNavCommand({
       mode: newMode,
-      action: newMode === "AUTONOMOUS" ? "FORWARD" : "STOP",
+      action: newAction,
       source: "MANUAL",
     });
-    fetchStatus();
+
+    if (res.success && res.data?.history) {
+      setNavState((prev) => ({ ...prev, history: res.data.history, mode: newMode, action: newAction }));
+    } else {
+      fetchStatus();
+    }
   };
 
   // press-and-hold touch controls
   const handlePointerDown = async (direction) => {
     if (navState.mode === "AUTONOMOUS") return;
     setActivePressedBtn(direction);
-    await postNavCommand({
+    recordOptimisticAudit(direction, "MANUAL", "MANUAL");
+
+    const res = await postNavCommand({
       mode: "MANUAL",
       action: direction,
       source: "MANUAL",
     });
-    fetchStatus();
+
+    if (res.success && res.data?.history) {
+      setNavState((prev) => ({ ...prev, history: res.data.history }));
+    }
   };
 
   const handlePointerUp = async () => {
     if (navState.mode === "AUTONOMOUS") return;
     setActivePressedBtn(null);
-    if (navState.action !== "STOP") {
-      await postNavCommand({
-        mode: "MANUAL",
-        action: "STOP",
-        source: "MANUAL",
-      });
-      fetchStatus();
+    recordOptimisticAudit("STOP", "MANUAL", "MANUAL");
+
+    const res = await postNavCommand({
+      mode: "MANUAL",
+      action: "STOP",
+      source: "MANUAL",
+    });
+
+    if (res.success && res.data?.history) {
+      setNavState((prev) => ({ ...prev, history: res.data.history }));
     }
   };
 
@@ -150,12 +198,19 @@ const Navigation = () => {
   // emergency stop button
   const handleEmergencyStop = async () => {
     setActivePressedBtn(null);
-    await postNavCommand({
+    recordOptimisticAudit("STOP", "MANUAL", "MANUAL");
+
+    const res = await postNavCommand({
       mode: "MANUAL",
       action: "STOP",
       source: "MANUAL",
     });
-    fetchStatus();
+
+    if (res.success && res.data?.history) {
+      setNavState((prev) => ({ ...prev, history: res.data.history, mode: "MANUAL", action: "STOP" }));
+    } else {
+      fetchStatus();
+    }
   };
 
   const isAutonomous = navState.mode === "AUTONOMOUS";

@@ -15,11 +15,19 @@ dotenv.config();
 
 const app = express();
 
-connectDB();
-
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// ensure MongoDB Atlas connection is established before route handlers run
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+  } catch (err) {
+    console.warn("Serverless DB connection non-blocking notice:", err.message);
+  }
+  next();
+});
 
 // health check endpoint
 app.get("/", (req, res) => {
