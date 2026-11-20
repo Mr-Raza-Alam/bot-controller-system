@@ -1,0 +1,209 @@
+.security-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: secBackdropFade 0.2s ease-out;
+}
+
+.security-modal-card {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-top: 3px solid #0284c7;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 440px;
+  padding: 1.5rem;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.6), 0 0 30px rgba(2, 132, 199, 0.2);
+  color: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  animation: secModalPop 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.security-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  border-bottom: 1px solid #1e293b;
+  padding-bottom: 0.85rem;
+}
+
+.security-tag-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.security-badge-tag {
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #38bdf8;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.security-modal-header h3 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+}
+
+.security-close-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  color: #94a3b8;
+  font-size: 1.1rem;
+  cursor: pointer;
+  line-height: 1;
+  transition: all 0.15s ease;
+}
+
+.security-close-btn:hover {
+  background: #334155;
+  color: #ffffff;
+}
+
+.security-modal-desc {
+  font-size: 0.82rem;
+  color: #94a3b8;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.security-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.security-input-wrapper {
+  position: relative;
+}
+
+.security-pin-input {
+  width: 100%;
+  padding: 0.85rem 1.1rem;
+  background: #1e293b;
+  border: 1px solid #475569;
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 1.1rem;
+  letter-spacing: 3px;
+  text-align: center;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  outline: none;
+  transition: all 0.18s ease;
+}
+
+.security-pin-input:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
+  background: #0f172a;
+}
+
+.security-error-badge {
+  background: rgba(239, 68, 68, 0.18);
+  border: 1px solid #ef4444;
+  color: #fca5a5;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.45rem 0.75rem;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.security-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: 0.25rem;
+}
+
+.security-cancel-btn {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  color: #cbd5e1;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.security-cancel-btn:hover {
+  background: #334155;
+  color: #ffffff;
+}
+
+.security-arm-submit-btn {
+  flex: 2;
+  padding: 0.75rem 1.25rem;
+  background: #0284c7;
+  border: 1px solid #38bdf8;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 0.84rem;
+  font-weight: 800;
+  cursor: pointer;
+  letter-spacing: 0.4px;
+  transition: all 0.18s ease;
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+}
+
+.security-arm-submit-btn:hover {
+  background: #0369a1;
+  transform: translateY(-1px);
+}
+
+.security-hint-note {
+  font-size: 0.7rem;
+  color: #64748b;
+  font-style: italic;
+  text-align: center;
+  line-height: 1.35;
+}
+
+/* SHAKE ANIMATION ON INVALID PIN */
+.security-shake {
+  animation: shakeEffect 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes shakeEffect {
+  10%, 90% { transform: translate(-50%, -50%) translate3d(-3px, 0, 0); }
+  20%, 80% { transform: translate(-50%, -50%) translate3d(5px, 0, 0); }
+  30%, 50%, 70% { transform: translate(-50%, -50%) translate3d(-6px, 0, 0); }
+  40%, 60% { transform: translate(-50%, -50%) translate3d(6px, 0, 0); }
+}
+
+@keyframes secBackdropFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes secModalPop {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}

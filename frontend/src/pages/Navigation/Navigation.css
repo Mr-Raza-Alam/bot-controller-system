@@ -93,6 +93,60 @@
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
 }
 
+/* SECURITY STREAM STATUS STRIP */
+.nav-security-stream-strip {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 8px;
+  font-size: 0.72rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-weight: 700;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.strip-armed {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+  color: #166534;
+}
+
+.strip-spectator {
+  background: #fffbeb;
+  border-color: #fef08a;
+  color: #854d0e;
+}
+
+.stream-signal-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.stream-status-text {
+  flex: 1;
+}
+
+.stream-unlock-trigger-btn {
+  background: #0284c7;
+  color: #ffffff;
+  border: none;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  cursor: pointer;
+  letter-spacing: 0.4px;
+  transition: all 0.15s ease;
+}
+
+.stream-unlock-trigger-btn:hover {
+  background: #0369a1;
+}
+
 /* EXECUTION RIBBON */
 .nav-cockpit-ribbon {
   display: flex;

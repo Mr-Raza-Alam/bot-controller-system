@@ -93,6 +93,50 @@
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
+/* Commander Security Status Badges */
+.security-badge-armed {
+  background: #f0fdf4;
+  border-color: #86efac;
+}
+
+.security-badge-spectator {
+  background: #fffbeb;
+  border-color: #fde68a;
+}
+
+.security-toggle-pill-btn {
+  border: none;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  padding: 0.15rem 0.55rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  margin-left: 0.25rem;
+}
+
+.arm-pill {
+  background: #0284c7;
+  color: #ffffff;
+}
+
+.arm-pill:hover {
+  background: #0369a1;
+}
+
+.lock-pill {
+  background: #f1f5f9;
+  color: #64748b;
+  border: 1px solid #cbd5e1;
+}
+
+.lock-pill:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
 /* ==========================================================================
    MISSION-CONTROL TACTICAL SUB-NAVBAR SHADE
    ========================================================================== */

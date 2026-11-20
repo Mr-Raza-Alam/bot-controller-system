@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { pingServer, getBotStatus } from "../../services/api";
+import { useSecurity } from "../../context/SecurityContext";
 import "./Navbar.css";
 
 const Navbar = () => {
+  const { isArmed, openUnlockModal, lockStation } = useSecurity();
   const [isCloudOnline, setIsCloudOnline] = useState(false);
   const [botStatus, setBotStatus] = useState({ isOnline: false, secondsAgo: null });
   const [openDropdown, setOpenDropdown] = useState(null); // 'drive' | 'subsystems' | null
@@ -65,7 +67,7 @@ const Navbar = () => {
           <span className="system-subtitle">Virtual Controller &amp; Telemetry Station</span>
         </div>
 
-        {/* dual status telemetry indicators */}
+        {/* status telemetry & commander security indicators */}
         <div className="status-indicators-group">
           <div className="system-status-badge">
             <span className={`status-signal ${isCloudOnline ? "signal-active" : "signal-inactive"}`}></span>
@@ -83,6 +85,33 @@ const Navbar = () => {
                 ? `BOT: STANDBY (${botStatus.secondsAgo}s ago)`
                 : "BOT: OFFLINE"}
             </span>
+          </div>
+
+          {/* Commander Security Status Interlock */}
+          <div className={`system-status-badge ${isArmed ? "security-badge-armed" : "security-badge-spectator"}`}>
+            <span className={`status-signal ${isArmed ? "signal-active" : "signal-standby"}`}></span>
+            <span className="status-text">
+              {isArmed ? "COMMANDER: ARMED" : "SPECTATOR MODE"}
+            </span>
+            {isArmed ? (
+              <button
+                type="button"
+                className="security-toggle-pill-btn lock-pill"
+                onClick={lockStation}
+                title="Lock station back to spectator mode"
+              >
+                Lock
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="security-toggle-pill-btn arm-pill"
+                onClick={openUnlockModal}
+                title="Enter Commander PIN to start stream & unlock controls"
+              >
+                Arm Station
+              </button>
+            )}
           </div>
         </div>
       </div>

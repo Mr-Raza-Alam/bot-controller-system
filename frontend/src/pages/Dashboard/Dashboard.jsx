@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSecurity } from "../../context/SecurityContext";
 import {
   getLatestSensor,
   getFlameLive,
@@ -13,6 +14,7 @@ import StatusBadge from "../../components/StatusBadge/StatusBadge";
 import "./Dashboard.css";
 
 const Dashboard = () => {
+  const { isArmed, openUnlockModal } = useSecurity();
   // specialized flame telemetry state
   const [flameState, setFlameState] = useState({
     flameRaw: 4095,
@@ -117,9 +119,10 @@ const Dashboard = () => {
       setServerStatus(res.success ? "Online" : "Offline");
     });
     syncTelemetry();
+    if (!isArmed) return; // In spectator mode, pause loop to eliminate 304 network traffic
     const pollTimer = setInterval(syncTelemetry, 1500);
     return () => clearInterval(pollTimer);
-  }, []);
+  }, [isArmed]);
 
   // escape key listener to close popup modal
   useEffect(() => {
@@ -172,6 +175,10 @@ const Dashboard = () => {
   }, []);
 
   const toggleVoice = () => {
+    if (!isArmed) {
+      openUnlockModal();
+      return;
+    }
     if (!speechSupported || !window._cockpitVoice) return;
     if (isListening) {
       window._cockpitVoice.stop();
@@ -185,6 +192,10 @@ const Dashboard = () => {
 
   // navigation commands
   const handleNavCommand = async (action, source = "MANUAL") => {
+    if (!isArmed) {
+      openUnlockModal();
+      return;
+    }
     await postNavCommand({
       mode: navState.mode,
       action,
@@ -195,6 +206,10 @@ const Dashboard = () => {
 
   // press-and-hold touch handlers
   const handlePointerDown = async (direction) => {
+    if (!isArmed) {
+      openUnlockModal();
+      return;
+    }
     if (navState.mode === "AUTONOMOUS") return;
     setActivePressedBtn(direction);
     await postNavCommand({
@@ -206,6 +221,7 @@ const Dashboard = () => {
   };
 
   const handlePointerUp = async () => {
+    if (!isArmed) return;
     if (navState.mode === "AUTONOMOUS") return;
     setActivePressedBtn(null);
     await postNavCommand({
@@ -217,6 +233,10 @@ const Dashboard = () => {
   };
 
   const handleModeSwitch = async (newMode) => {
+    if (!isArmed) {
+      openUnlockModal();
+      return;
+    }
     await postNavCommand({
       mode: newMode,
       action: newMode === "AUTONOMOUS" ? "FORWARD" : "STOP",

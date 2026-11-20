@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { postNavCommand, getNavStatus, clearNavHistory } from "../../services/api";
+import { useSecurity } from "../../context/SecurityContext";
 import StatusBadge from "../../components/StatusBadge/StatusBadge";
 import "./Navigation.css";
 
 const Navigation = () => {
+  const { isArmed, openUnlockModal } = useSecurity();
   const [navState, setNavState] = useState({
     mode: "MANUAL",
     action: "STOP",
@@ -32,9 +34,10 @@ const Navigation = () => {
 
   useEffect(() => {
     fetchStatus();
+    if (!isArmed) return; // In spectator mode, pause loop to save 304 network traffic
     const interval = setInterval(fetchStatus, 800);
     return () => clearInterval(interval);
-  }, []);
+  }, [isArmed]);
 
   // bilingual voice recognition (English + Hinglish)
   useEffect(() => {
@@ -127,6 +130,10 @@ const Navigation = () => {
   };
 
   const toggleVoice = () => {
+    if (!isArmed) {
+      openUnlockModal();
+      return;
+    }
     if (!speechSupported || !window._navVoice) return;
     if (isListening) {
       window._navVoice.stop();
@@ -140,6 +147,10 @@ const Navigation = () => {
 
   // mode switch (MANUAL vs AUTONOMOUS)
   const handleModeSwitch = async (newMode) => {
+    if (!isArmed) {
+      openUnlockModal();
+      return;
+    }
     const newAction = newMode === "AUTONOMOUS" ? "FORWARD" : "STOP";
     recordOptimisticAudit(newAction, newMode, "MANUAL");
 
@@ -158,6 +169,10 @@ const Navigation = () => {
 
   // press-and-hold touch controls
   const handlePointerDown = async (direction) => {
+    if (!isArmed) {
+      openUnlockModal();
+      return;
+    }
     if (navState.mode === "AUTONOMOUS") return;
     setActivePressedBtn(direction);
     recordOptimisticAudit(direction, "MANUAL", "MANUAL");
@@ -174,6 +189,7 @@ const Navigation = () => {
   };
 
   const handlePointerUp = async () => {
+    if (!isArmed) return;
     if (navState.mode === "AUTONOMOUS") return;
     setActivePressedBtn(null);
     recordOptimisticAudit("STOP", "MANUAL", "MANUAL");
@@ -191,12 +207,20 @@ const Navigation = () => {
 
   // sweep and clear command audit trail
   const handleClearAuditTrail = async () => {
+    if (!isArmed) {
+      openUnlockModal();
+      return;
+    }
     setNavState((prev) => ({ ...prev, history: [] }));
     await clearNavHistory();
   };
 
   // emergency stop button
   const handleEmergencyStop = async () => {
+    if (!isArmed) {
+      openUnlockModal();
+      return;
+    }
     setActivePressedBtn(null);
     recordOptimisticAudit("STOP", "MANUAL", "MANUAL");
 
@@ -244,6 +268,25 @@ const Navigation = () => {
                 AUTO-PILOT
               </button>
             </div>
+          </div>
+
+          {/* stream & security status strip */}
+          <div className={`nav-security-stream-strip ${isArmed ? "strip-armed" : "strip-spectator"}`}>
+            <span className={`stream-signal-dot ${isArmed ? "signal-active" : "signal-standby"}`}></span>
+            <span className="stream-status-text">
+              {isArmed
+                ? "TELEMETRY LINK: ACTIVE (800ms LIVE STREAM)"
+                : "STREAM PAUSED (SPECTATOR MODE • ENTER PIN TO ARM)"}
+            </span>
+            {!isArmed && (
+              <button
+                type="button"
+                className="stream-unlock-trigger-btn"
+                onClick={openUnlockModal}
+              >
+                Unlock
+              </button>
+            )}
           </div>
 
           {/* execution ribbon */}
