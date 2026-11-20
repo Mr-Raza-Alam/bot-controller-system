@@ -4,10 +4,12 @@ import {
   calibrateGasBaseline,
   getGasLogs,
 } from "../../services/api";
+import { useSecurity } from "../../context/SecurityContext";
 import StatusBadge from "../../components/StatusBadge/StatusBadge";
 import "./GasMonitor.css";
 
 const GasMonitor = () => {
+  const { isArmed } = useSecurity();
   const [gasData, setGasData] = useState({
     gasRaw: 600,
     gasDelta: 0,
@@ -59,9 +61,10 @@ const GasMonitor = () => {
     fetchTelemetry();
     fetchIncidents();
 
+    if (!isArmed) return; // In spectator mode, pause background loop
     const interval = setInterval(fetchTelemetry, 1500);
     return () => clearInterval(interval);
-  }, []);
+  }, [isArmed]);
 
   // auto refresh incidents when status hits hazardous
   useEffect(() => {

@@ -4,10 +4,12 @@ import {
   saveVitalCheckup,
   getVitalsLogs,
 } from "../../services/api";
+import { useSecurity } from "../../context/SecurityContext";
 import StatusBadge from "../../components/StatusBadge/StatusBadge";
 import "./HealthMonitor.css";
 
 const HealthMonitor = () => {
+  const { isArmed } = useSecurity();
   // active inspection mode: "BOTH", "HEART_RATE", or "BODY_TEMP"
   const [activeMode, setActiveMode] = useState("BOTH");
 
@@ -45,9 +47,10 @@ const HealthMonitor = () => {
     fetchTelemetry();
     fetchRecords();
 
+    if (!isArmed) return; // In spectator mode, pause background stream
     const interval = setInterval(fetchTelemetry, 1500);
     return () => clearInterval(interval);
-  }, []);
+  }, [isArmed]);
 
   // save clean checkup record to mongodb
   const handleSaveCheckup = async (modeToSave = activeMode) => {

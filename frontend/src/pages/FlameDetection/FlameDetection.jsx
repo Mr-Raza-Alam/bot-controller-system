@@ -4,10 +4,12 @@ import {
   getFlameLogs,
   updateFlameThreshold,
 } from "../../services/api";
+import { useSecurity } from "../../context/SecurityContext";
 import StatusBadge from "../../components/StatusBadge/StatusBadge";
 import "./FlameDetection.css";
 
 const FlameDetection = () => {
+  const { isArmed } = useSecurity();
   const [liveData, setLiveData] = useState({
     flameRaw: 4095,
     flameIntensity: 0,
@@ -53,10 +55,10 @@ const FlameDetection = () => {
     fetchLiveStatus();
     fetchIncidents();
 
-    // poll every 1.5s for live intensity
+    if (!isArmed) return; // In spectator mode, pause background loop
     const interval = setInterval(fetchLiveStatus, 1500);
     return () => clearInterval(interval);
-  }, []);
+  }, [isArmed]);
 
   // refresh incident logs whenever fire state changes
   useEffect(() => {

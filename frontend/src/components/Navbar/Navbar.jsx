@@ -28,9 +28,10 @@ const Navbar = () => {
     };
 
     checkLinks();
-    const interval = setInterval(checkLinks, 3000);
+    if (!isArmed) return; // In spectator mode, pause background loop completely
+    const interval = setInterval(checkLinks, 4000);
     return () => clearInterval(interval);
-  }, []);
+  }, [isArmed]);
 
   // close dropdown on route change or escape key
   useEffect(() => {

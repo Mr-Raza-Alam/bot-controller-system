@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { getNavStatus } from "../../services/api";
+import { useSecurity } from "../../context/SecurityContext";
 import StatusBadge from "../../components/StatusBadge/StatusBadge";
 import "./ObstacleStatus.css";
 
 const ObstacleStatus = () => {
+  const { isArmed } = useSecurity();
   const [radarState, setRadarState] = useState({
     distanceCm: 999,
     obstacleDetected: false,
@@ -22,9 +24,10 @@ const ObstacleStatus = () => {
 
   useEffect(() => {
     fetchStatus();
+    if (!isArmed) return; // In spectator mode, pause background stream
     const interval = setInterval(fetchStatus, 800);
     return () => clearInterval(interval);
-  }, []);
+  }, [isArmed]);
 
   const dist = radarState.distanceCm;
   const isBlocked = radarState.obstacleDetected || dist < 15;

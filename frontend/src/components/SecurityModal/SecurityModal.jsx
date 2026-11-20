@@ -76,7 +76,7 @@ const SecurityModal = () => {
                 setPin(e.target.value);
                 setErrorMsg("");
               }}
-              placeholder="Enter PIN (Default: 2327)"
+              placeholder="Enter Commander PIN"
               className="security-pin-input"
             />
           </div>
