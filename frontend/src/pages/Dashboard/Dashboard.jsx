@@ -839,14 +839,6 @@ const Dashboard = () => {
                   ? "Decoupled Edge Architecture • Verified MERN + ESP32 Topology"
                   : `Live Edge Stream | ${lastSync ? `Synced at ${lastSync}` : "Connected"}`}
               </span>
-              {activeModal !== "ARCHITECTURE" && (
-                <button
-                  className="secondary-btn"
-                  onClick={() => setActiveModal(null)}
-                >
-                  Dismiss
-                </button>
-              )}
             </div>
           </div>
         </div>
