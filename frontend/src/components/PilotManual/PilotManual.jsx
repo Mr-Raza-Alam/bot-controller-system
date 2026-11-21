@@ -6,6 +6,31 @@ const PilotManual = ({ onClose }) => {
 
   return (
     <div className="pilot-manual-container">
+      {/* top action bar for full printable PDF */}
+      <div className="manual-pdf-actions-bar">
+        <div className="pdf-bar-meta">
+          <span className="pdf-doc-title">Printable Pilot Operations Manual</span>
+          <span className="pdf-doc-sub">Full vector schematics, hardware pinouts &amp; telemetry tables</span>
+        </div>
+        <div className="pdf-btn-group">
+          <a
+            href="/pilot-field-manual.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="pdf-action-link link-view"
+          >
+            📄 View Full PDF
+          </a>
+          <a
+            href="/pilot-field-manual.pdf"
+            download="Multi-Purpose-Bot-Pilot-Manual.pdf"
+            className="pdf-action-link link-download"
+          >
+            ⬇️ Download PDF
+          </a>
+        </div>
+      </div>
+
       {/* manual tab navigation */}
       <nav className="manual-nav-tabs">
         <button
@@ -244,12 +269,9 @@ const PilotManual = ({ onClose }) => {
         </section>
       )}
 
-      {/* manual footer download note */}
+      {/* manual footer reference note */}
       <div className="manual-footer-bar">
-        <span>Complete documentation available in repository at <code>MANUAL.md</code></span>
-        <button className="manual-close-action-btn" onClick={onClose}>
-          Exit Manual
-        </button>
+        <span>Complete documentation and hardware schematics available in repository at <code>MANUAL.md</code></span>
       </div>
     </div>
   );
