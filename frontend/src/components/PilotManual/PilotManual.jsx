@@ -6,64 +6,64 @@ const PilotManual = ({ onClose }) => {
 
   return (
     <div className="pilot-manual-container">
-      {/* top action bar for full printable PDF */}
-      <div className="manual-pdf-actions-bar">
-        <div className="pdf-bar-meta">
-          <span className="pdf-doc-title">Printable Pilot Operations Manual</span>
-          <span className="pdf-doc-sub">Full vector schematics, hardware pinouts &amp; telemetry tables</span>
-        </div>
-        <div className="pdf-btn-group">
+      {/* compact tabs header with minimalist circular pdf actions */}
+      <div className="manual-header-strip">
+        <nav className="manual-nav-tabs">
+          <button
+            className={`manual-tab-btn ${activeTab === "CONTROLS" ? "tab-active" : ""}`}
+            onClick={() => setActiveTab("CONTROLS")}
+          >
+            1. Controls &amp; D-Pad
+          </button>
+          <button
+            className={`manual-tab-btn ${activeTab === "SECURITY" ? "tab-active" : ""}`}
+            onClick={() => setActiveTab("SECURITY")}
+          >
+            2. Security Interlock
+          </button>
+          <button
+            className={`manual-tab-btn ${activeTab === "VOICE" ? "tab-active" : ""}`}
+            onClick={() => setActiveTab("VOICE")}
+          >
+            3. Voice Lexicon
+          </button>
+          <button
+            className={`manual-tab-btn ${activeTab === "RADAR" ? "tab-active" : ""}`}
+            onClick={() => setActiveTab("RADAR")}
+          >
+            4. Radar &amp; Failsafe
+          </button>
+          <button
+            className={`manual-tab-btn ${activeTab === "SENSORS" ? "tab-active" : ""}`}
+            onClick={() => setActiveTab("SENSORS")}
+          >
+            5. Sensors &amp; Calibration
+          </button>
+        </nav>
+
+        {/* minimalist circular actions: view and download */}
+        <div className="manual-quick-actions">
           <a
             href="/pilot-field-manual.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="pdf-action-link link-view"
+            className="circle-pdf-btn btn-view"
+            title="View Full PDF in new tab"
+            aria-label="View Full PDF"
           >
-            📄 View Full PDF
+            👁️
           </a>
           <a
             href="/pilot-field-manual.pdf"
             download="Multi-Purpose-Bot-Pilot-Manual.pdf"
-            className="pdf-action-link link-download"
+            className="circle-pdf-btn btn-download"
+            title="Download Full Printable PDF"
+            aria-label="Download Printable PDF"
           >
-            ⬇️ Download PDF
+            ⬇️
           </a>
         </div>
       </div>
-
-      {/* manual tab navigation */}
-      <nav className="manual-nav-tabs">
-        <button
-          className={`manual-tab-btn ${activeTab === "CONTROLS" ? "tab-active" : ""}`}
-          onClick={() => setActiveTab("CONTROLS")}
-        >
-          1. Controls &amp; D-Pad
-        </button>
-        <button
-          className={`manual-tab-btn ${activeTab === "SECURITY" ? "tab-active" : ""}`}
-          onClick={() => setActiveTab("SECURITY")}
-        >
-          2. Security Interlock
-        </button>
-        <button
-          className={`manual-tab-btn ${activeTab === "VOICE" ? "tab-active" : ""}`}
-          onClick={() => setActiveTab("VOICE")}
-        >
-          3. Voice Lexicon
-        </button>
-        <button
-          className={`manual-tab-btn ${activeTab === "RADAR" ? "tab-active" : ""}`}
-          onClick={() => setActiveTab("RADAR")}
-        >
-          4. Radar &amp; Failsafe
-        </button>
-        <button
-          className={`manual-tab-btn ${activeTab === "SENSORS" ? "tab-active" : ""}`}
-          onClick={() => setActiveTab("SENSORS")}
-        >
-          5. Sensors &amp; Calibration
-        </button>
-      </nav>
 
       {/* tab 1: controls & d-pad */}
       {activeTab === "CONTROLS" && (
