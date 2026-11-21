@@ -1,5 +1,6 @@
 // centralized api service connecting frontend to backend
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+const RAW_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+const BASE_URL = RAW_URL.replace(/\/+$/, "");
 
 // check server health / trigger wake-up during exhibition mini-test
 export const pingServer = async () => {

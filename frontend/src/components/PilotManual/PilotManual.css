@@ -1,0 +1,324 @@
+.pilot-manual-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  color: #0f172a;
+}
+
+.manual-nav-tabs {
+  display: flex;
+  gap: 0.4rem;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 0.5rem;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.manual-tab-btn {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+  padding: 0.45rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.manual-tab-btn:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+  border-color: #94a3b8;
+}
+
+.manual-tab-btn.tab-active {
+  background: #0284c7;
+  color: #ffffff;
+  border-color: #0284c7;
+  box-shadow: 0 2px 4px rgba(2, 132, 199, 0.25);
+}
+
+.manual-section-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.95rem;
+  animation: tabFadeIn 0.15s ease-in-out;
+}
+
+@keyframes tabFadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.manual-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 0.5rem;
+}
+
+.manual-section-header h4 {
+  margin: 0;
+  font-size: 0.98rem;
+  color: #0f172a;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+}
+
+.manual-pill {
+  font-size: 0.62rem;
+  font-weight: 800;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  background: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+  letter-spacing: 0.5px;
+}
+
+.manual-pill.pill-warning {
+  background: #fef3c7;
+  color: #92400e;
+  border-color: #fde68a;
+}
+
+.manual-pill.pill-danger {
+  background: #fee2e2;
+  color: #991b1b;
+  border-color: #fecaca;
+}
+
+.manual-lead-text {
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: #334155;
+  margin: 0;
+}
+
+/* Schematic Box (ASCII diagrams) */
+.schematic-box {
+  background: #090d16;
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  color: #38bdf8;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.schematic-title {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #94a3b8;
+  letter-spacing: 0.8px;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.schematic-art {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  overflow-x: auto;
+  color: #7dd3fc;
+}
+
+/* Rules Grid */
+.manual-rules-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.manual-rule-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.75rem;
+}
+
+.manual-rule-card h5 {
+  margin: 0 0 0.35rem 0;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #0284c7;
+}
+
+.manual-rule-card p {
+  margin: 0;
+  font-size: 0.78rem;
+  color: #475569;
+  line-height: 1.45;
+}
+
+.manual-callout-box {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.82rem;
+  color: #166534;
+  line-height: 1.45;
+}
+
+.manual-callout-box code {
+  background: #dcfce7;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  font-weight: 800;
+  color: #14532d;
+}
+
+/* Data Table */
+.manual-data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+  margin-top: 0.35rem;
+}
+
+.manual-data-table th,
+.manual-data-table td {
+  padding: 0.55rem 0.65rem;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.manual-data-table th {
+  background: #f8fafc;
+  color: #475569;
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.manual-data-table td {
+  color: #1e293b;
+}
+
+/* Radar Zone Diagram */
+.radar-zone-diagram {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.radar-zone {
+  display: grid;
+  grid-template-columns: 85px 190px 1fr;
+  align-items: center;
+  padding: 0.6rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.76rem;
+  gap: 0.5rem;
+}
+
+.zone-critical {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+}
+
+.zone-caution {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  color: #92400e;
+}
+
+.zone-safe {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+}
+
+.zone-range {
+  font-weight: 800;
+  font-family: monospace;
+}
+
+.zone-name {
+  font-weight: 700;
+}
+
+.zone-action {
+  font-size: 0.74rem;
+  opacity: 0.9;
+}
+
+/* Sensor Specs */
+.sensors-spec-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.sensor-spec-item {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.75rem 0.95rem;
+}
+
+.spec-badge {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #0284c7;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.25rem;
+}
+
+.sensor-spec-item p {
+  margin: 0;
+  font-size: 0.78rem;
+  color: #334155;
+  line-height: 1.45;
+}
+
+.sensor-spec-item code {
+  background: #e2e8f0;
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  font-size: 0.74rem;
+}
+
+/* Footer Bar */
+.manual-footer-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #e2e8f0;
+  font-size: 0.74rem;
+  color: #64748b;
+}
+
+.manual-close-action-btn {
+  background: #0f172a;
+  color: #ffffff;
+  border: none;
+  padding: 0.45rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.manual-close-action-btn:hover {
+  background: #334155;
+}
+
+@media (max-width: 640px) {
+  .manual-rules-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .radar-zone {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+}

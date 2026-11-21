@@ -11,6 +11,7 @@ import {
   getBotStatus,
 } from "../../services/api";
 import StatusBadge from "../../components/StatusBadge/StatusBadge";
+import PilotManual from "../../components/PilotManual/PilotManual";
 import "./Dashboard.css";
 
 const Dashboard = () => {
@@ -304,6 +305,12 @@ const Dashboard = () => {
 
         <div className="header-actions">
           <button
+            className={`secondary-btn ${activeModal === "MANUAL" ? "btn-active-arch" : ""}`}
+            onClick={() => setActiveModal(activeModal === "MANUAL" ? null : "MANUAL")}
+          >
+            Flight Manual
+          </button>
+          <button
             className={`secondary-btn ${activeModal === "ARCHITECTURE" ? "btn-active-arch" : ""}`}
             onClick={() => setActiveModal(activeModal === "ARCHITECTURE" ? null : "ARCHITECTURE")}
           >
@@ -521,14 +528,20 @@ const Dashboard = () => {
       {activeModal && (
         <div className="telemetry-modal-backdrop" onClick={() => setActiveModal(null)}>
           <div
-            className="telemetry-popup-modal"
+            className={`telemetry-popup-modal ${
+              activeModal === "MANUAL" || activeModal === "ARCHITECTURE" ? "modal-wide" : ""
+            }`}
             onClick={(e) => e.stopPropagation()}
           >
             {/* modal header */}
             <div className="modal-header">
               <div className="modal-title-group">
                 <span className="modal-tag">
-                  {activeModal === "ARCHITECTURE" ? "SYSTEM TOPOLOGY" : "LIVE REPORT CARD"}
+                  {activeModal === "ARCHITECTURE"
+                    ? "SYSTEM TOPOLOGY"
+                    : activeModal === "MANUAL"
+                    ? "PILOT NOTEBOOK & FIELD MANUAL"
+                    : "LIVE REPORT CARD"}
                 </span>
                 <h3>
                   {activeModal === "FLAME" && "Flame Detection Telemetry"}
@@ -537,6 +550,7 @@ const Dashboard = () => {
                   {activeModal === "TEMP" && "Body Temperature Screening"}
                   {activeModal === "RADAR" && "Obstacle Avoidance Radar"}
                   {activeModal === "ARCHITECTURE" && "System Architecture Topology"}
+                  {activeModal === "MANUAL" && "Virtual Controller Operations Notebook"}
                 </h3>
               </div>
               <button
@@ -850,6 +864,11 @@ const Dashboard = () => {
                   </p>
                 </div>
               )}
+
+              {/* 7. PILOT MANUAL & FIELD NOTEBOOK */}
+              {activeModal === "MANUAL" && (
+                <PilotManual onClose={() => setActiveModal(null)} />
+              )}
             </div>
 
             {/* modal footer */}
@@ -857,6 +876,8 @@ const Dashboard = () => {
               <span className="modal-sync-time">
                 {activeModal === "ARCHITECTURE"
                   ? "Decoupled Edge Architecture • Verified MERN + ESP32 Topology"
+                  : activeModal === "MANUAL"
+                  ? "Pilot Operations Manual • Dual ESP32 Decoupled Robotics"
                   : `Live Edge Stream | ${lastSync ? `Synced at ${lastSync}` : "Connected"}`}
               </span>
             </div>
